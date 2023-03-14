@@ -54,4 +54,9 @@ public class OperateLogQuery extends PageQuery {
      */
     private String location;
 
+
+    /**
+     * 用户ID
+     */
+    private Integer userId;
 }

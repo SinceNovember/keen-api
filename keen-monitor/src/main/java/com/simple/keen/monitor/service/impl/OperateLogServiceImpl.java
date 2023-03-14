@@ -1,5 +1,6 @@
 package com.simple.keen.monitor.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -99,6 +100,7 @@ public class OperateLogServiceImpl extends ServiceImpl<OperateLogMapper, Operate
         }
         operateLog.setOperateTime(LocalDateTime.now());
         operateLog.setLocation(HttpUtils.requestLocation(ip));
+        operateLog.setUserId(StpUtil.getLoginIdAsInt());
         // 保存系统日志
         save(operateLog);
 

@@ -17,6 +17,9 @@ public interface OperateLogMapper  extends BaseMapper<OperateLog> {
             "<if test=\"nickname != null and nickname != ''\">" +
             "and nickname like concat('%', #{nickname}, '%') " +
             "</if>" +
+            "<if test=\"userId != null and userId != ''\">" +
+            "and user_id = #{userId}" +
+            "</if>" +
             "</where> " +
             "order by operate_time desc" +
             "</script>")

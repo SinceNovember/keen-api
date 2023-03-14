@@ -19,9 +19,12 @@ public interface MsgConsts {
 
     String LOGIN_ERROR_MSG = "账号或密码错误";
 
+    String PASSWORD_ERROR_MSG = "输入的密码错误";
+
     String USER_NOT_LOGIN_MSG = "用户未登录";
 
     String USER_LOCK_MSG = "当前账号已被封禁，无法登录";
 
     String USER_NO_API_PERMISSION = "当前账号无访问此api权限";
+
 }

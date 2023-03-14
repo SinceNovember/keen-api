@@ -2,15 +2,22 @@ package com.simple.keen.auth.service.impl;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import com.github.pagehelper.PageSerializable;
 import com.simple.keen.auth.mapper.AuthMapper;
 import com.simple.keen.auth.model.query.AuthQuery;
 import com.simple.keen.auth.service.IAuthService;
 import com.simple.keen.common.consts.MsgConsts;
 import com.simple.keen.common.ex.KeenException;
+import com.simple.keen.monitor.model.query.LoginLogQuery;
+import com.simple.keen.monitor.model.query.OperateLogQuery;
+import com.simple.keen.monitor.model.vo.LoginLogVO;
 import com.simple.keen.monitor.service.ILoginLogService;
+import com.simple.keen.monitor.service.IOperateLogService;
+import com.simple.keen.system.model.entity.User;
 import com.simple.keen.system.model.enums.StatusType;
 import com.simple.keen.system.model.vo.UserVO;
 import com.simple.keen.system.service.IUserService;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +37,23 @@ public class AuthServiceImpl implements IAuthService {
 
     private final ILoginLogService loginLogService;
 
+    private final IOperateLogService operateLogService;
+
     @Override
     public UserVO getLoginUserInfo() {
         return userService.getUserById(StpUtil.getLoginIdAsInt());
+    }
+
+    @Override
+    public PageSerializable<LoginLogVO> pageUserLoginLog(LoginLogQuery loginLogQuery) {
+        loginLogQuery.setUserId(StpUtil.getLoginIdAsInt());
+        return loginLogService.pageLoginLog(loginLogQuery);
+    }
+
+    @Override
+    public Object pageUserOperateLog(OperateLogQuery operateLogQuery) {
+        operateLogQuery.setUserId(StpUtil.getLoginIdAsInt());
+        return operateLogService.pageOperateLog(operateLogQuery);
     }
 
     @Override
@@ -44,13 +65,33 @@ public class AuthServiceImpl implements IAuthService {
         if (userVO.getStatus() == StatusType.LOCK) {
             throw new KeenException(MsgConsts.USER_LOCK_MSG);
         }
-        loginLogService.addLoginLog(userVO.getNickname());
         StpUtil.login(userVO.getId(), query.isRememberMe());
+        loginLogService.addLoginLog(userVO.getNickname());
         return StpUtil.getTokenInfo();
     }
 
     @Override
     public void logout(String token) {
         StpUtil.logoutByTokenValue(token);
+    }
+
+    @Override
+    public void updateUsername(AuthQuery authQuery) {
+        User user = userService.getById(StpUtil.getLoginIdAsInt());
+        if (!Objects.equals(authQuery.getPassword(), user.getPassword())) {
+            throw new KeenException(MsgConsts.PASSWORD_ERROR_MSG);
+        }
+        user.setUsername(authQuery.getUsername());
+        userService.updateById(user);
+    }
+
+    @Override
+    public void updatePassword(AuthQuery authQuery) {
+        User user = userService.getById(StpUtil.getLoginIdAsInt());
+        if (!Objects.equals(authQuery.getPassword(), user.getPassword())) {
+            throw new KeenException(MsgConsts.PASSWORD_ERROR_MSG);
+        }
+        user.setPassword(authQuery.getNewPassword());
+        userService.updateById(user);
     }
 }

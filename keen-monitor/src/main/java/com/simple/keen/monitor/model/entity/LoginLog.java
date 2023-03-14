@@ -67,6 +67,12 @@ public class LoginLog implements Serializable {
     @TableField("browser")
     private String browser;
 
+    /**
+     * 用户ID
+     */
+    @TableField("user_id")
+    private Integer userId;
+
 
     public void setSystemBrowserInfo() {
         try {

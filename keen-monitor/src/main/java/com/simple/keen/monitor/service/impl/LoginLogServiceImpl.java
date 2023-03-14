@@ -1,5 +1,11 @@
 package com.simple.keen.monitor.service.impl;
 
+import static com.simple.keen.common.utils.HttpUtils.requestBrowser;
+import static com.simple.keen.common.utils.HttpUtils.requestIp;
+import static com.simple.keen.common.utils.HttpUtils.requestLocation;
+import static com.simple.keen.common.utils.HttpUtils.requestSystem;
+
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -20,8 +26,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-
-import static com.simple.keen.common.utils.HttpUtils.*;
 
 /**
  * .
@@ -65,6 +69,7 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
         loginLog.setIp(requestIp());
         loginLog.setLocation(requestLocation(requestIp()));
         loginLog.setLoginTime(LocalDateTime.now());
+        loginLog.setUserId(StpUtil.getLoginIdAsInt());
 
         LoginLogMessage loginLogMessage = new LoginLogMessage();
         loginLogMessage.setNickname(nickname);

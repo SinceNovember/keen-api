@@ -59,4 +59,9 @@ public class OperateLogDTO {
      */
     private String location;
 
+    /**
+     * 用户id
+     */
+    private Integer userId;
+
 }

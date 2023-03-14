@@ -44,4 +44,9 @@ public class LoginLogQuery extends PageQuery {
      */
     private String browser;
 
+    /**
+     * 用户id
+     */
+    private Integer userId;
+
 }

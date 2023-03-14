@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping
-    public Response getUser(@NotNull Integer id) {
+    public Response getUser(@Validated @NotNull Integer id) {
         return Response.ok(userService.getUserById(id));
     }
 

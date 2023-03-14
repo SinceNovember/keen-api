@@ -74,4 +74,10 @@ public class OperateLog implements Serializable {
     @TableField("location")
     private String location;
 
+    /**
+     * 用户ID
+     */
+    @TableField("user_id")
+    private Integer userId;
+
 }

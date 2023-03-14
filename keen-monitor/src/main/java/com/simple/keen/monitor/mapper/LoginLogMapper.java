@@ -23,6 +23,9 @@ public interface LoginLogMapper extends BaseMapper<LoginLog> {
             "<if test=\"nickname != null and nickname != ''\">" +
             "and nickname like concat('%', #{nickname}, '%') " +
             "</if>" +
+            "<if test=\"userId != null and userId != ''\">" +
+            "and user_id = #{userId}" +
+            "</if>" +
             "</where> " +
             "order by login_time desc" +
             "</script>")
